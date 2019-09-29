@@ -50,6 +50,7 @@ class FINN(object):
         (i, j, k) = self.random_weight_index()
         self.weights[i][j][k] = bitflipZero(self.weights[i][j][k])
         print"Weight Flip at [{}][{}][{}]".format(i, j, k)
+        return "\t {} \t {} \t {}".format(i, j, k)
 
     # Method that returns the index of a random weight or edge of the network
     def random_weight_index(self):

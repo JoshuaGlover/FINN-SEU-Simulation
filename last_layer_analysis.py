@@ -2,7 +2,7 @@ from __future__ import division
 import numpy as np
 
 # Open log file
-fp = open("../results/last_layer/weight_seu_test_64.txt", "r")
+fp = open("results/last_layer/weight_seu_test_64.txt", "r")
 
 # List of jumps by digits
 jumps_by_dig = [[] * 10 for _ in range(10)]

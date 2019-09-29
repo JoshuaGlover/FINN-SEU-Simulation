@@ -17,7 +17,7 @@ hidden_layer_size = int(sys.argv[1])
 layer_sizes       = [784, hidden_layer_size, hidden_layer_size, 10]
 
 # Setup log file
-log_file_name = "tests/last_layer/weight_seu_test_" + str(hidden_layer_size) + ".txt"
+log_file_name = "results/last_layer/weight_seu_test_" + str(hidden_layer_size) + ".txt"
 fp = open(log_file_name, "w")
 
 # Load MNIST dataset

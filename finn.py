@@ -32,7 +32,7 @@ class FINN(object):
             # XNOR dot product and popcount
             a = dot_xnor(self.weights[layer], a)
             # Threshold
-            a = np.greater(a, self.thresholds[layer])
+            a = np.greater_equal(a, self.thresholds[layer])
 
         return a
 

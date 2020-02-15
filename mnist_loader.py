@@ -1,6 +1,8 @@
 """
 mnist_loader
 ~~~~~~~~~~~~
+This file is taken from the site: http://neuralnetworksanddeeplearning.com
+All credit and ownership belongs to Michael Nielsen.
 
 A library to load the MNIST image data.  For details of the data
 structures that are returned, see the doc strings for ``load_data``

@@ -2,7 +2,7 @@ from __future__ import division
 import numpy as np
 
 # Open log file
-fp = open("results/inversion/stuck_low_test_64.txt", "r")
+fp = open("results/node_seu/stuck_low_test_64.txt", "r")
 
 # Layer sizes
 layer_sizes = [784, 64, 64, 10]

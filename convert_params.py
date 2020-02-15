@@ -1,21 +1,28 @@
+"""
+This script converts the trained weights and batch-norm parameters pickled by the BNN-PYNQ trainer.
+Check out the project here: https://github.com/Xilinx/BNN-PYNQ/tree/master/bnn/src/training
+
+Usage: python convert_params.py <hidden_layer_size> <parameter_file>
+"""
+
 import pickle
 import sys
+import argparse
 import finnthesizer as fth
 import numpy        as np
 
-NUM_ARGS = 3
 
-# Check enough command line arguments are provided
-if len(sys.argv) != NUM_ARGS:
-    print("Usage: python convert_params.py <hidden_layer_size> <param file suffix>")
-    sys.exit()
+# Process command line arguments
+parser = argparse.ArgumentParser(description="Converts params from BNN-PYNQ to NumPy arrays and pickles them")
+parser.add_argument("hidden_layer_size", type=int, help="Size of hidden layer")
+parser.add_argument("in_file", type=str, help="BNN-PYNQ file containing trained params")
+args = parser.parse_args()
 
-# Get file ending for target parameter file
-hidden_layer_size = int(sys.argv[1])
-in_file           = sys.argv[2]
+hidden_layer_size = args.hidden_layer_size
+in_file = args.bnn_pynq_file
 
 # Create finnthesizer reader
-reader = fth.BNNWeightReader("params/mnist_1w_1a_" + in_file + ".npz", False)
+reader = fth.BNNWeightReader("params/" + in_file, False)
 
 # Read weight and thresholds layer by layer
 (w0, t0) = reader.readFCBNComplex(0, 0, 0, 1, 1, 1)
@@ -37,7 +44,7 @@ weights    = [w0, w1, w2]
 thresholds = [t0, t1, t2]
 
 # Pickle weight and thresholds so they can be read by FINN BNN
-out_file = "_" + str(hidden_layer_size) + "_" + in_file
+out_file = "_" + str(hidden_layer_size) + "_" + str(hidden_layer_size)
 with open("weights/weights" + out_file + ".txt", "wb") as fp:
     pickle.dump(weights, fp)
 with open("thresholds/thresholds" + out_file + ".txt", "wb") as fp:

@@ -1,19 +1,15 @@
 from __future__ import division
-
 import sys
 import finn
 import mnist_loader
 import numpy as np
 
-NUM_ARGS = 2
+# Process command line arguments
+parser = argparse.ArgumentParser(description="Measures the effect SEUs on weights in the last LAST_LAYER")
+parser.add_argument("hidden_layer_size", type=int, help="Size of hidden LAST_LAYER")
+args = parser.parse_args()
 
-# Check enough command line arguments are provided
-if len(sys.argv) != NUM_ARGS:
-    print("Usage: python weight_seu_test.py <hidden_layer_size>")
-    sys.exit()
-
-# Get command line args
-hidden_layer_size = int(sys.argv[1])
+hidden_layer_size = args.hidden_layer_size
 layer_sizes       = [784, hidden_layer_size, hidden_layer_size, 10]
 
 # Setup log file
@@ -30,14 +26,13 @@ net = finn.FINN(layer_sizes)
 start_acc = net.evaluate(test_data)/len(test_data)
 print("No Error Accuracy: " + str(start_acc * 100) + "%")
 
-# for layer in range(3):
-layer = 2
-for node_to in range(layer_sizes[layer + 1]):
-    for node_from in range(layer_sizes[layer]):
+LAST_LAYER = 2
+for node_to in range(layer_sizes[LAST_LAYER + 1]):
+    for node_from in range(layer_sizes[LAST_LAYER]):
         # Create fresh network
         net = finn.FINN(layer_sizes)
-        net.weight_seu_at(layer, node_to, node_from)
+        net.weight_seu_at(LAST_LAYER, node_to, node_from)
         accuracy = net.evaluate(test_data)/len(test_data)
         log_line = "{} \t {} \t {}".format(str(np.abs(start_acc - accuracy)), str(node_to), str(node_from))
         fp.write(log_line + "\n")
-        print"Weight Flip at [{}][{}][{}] \t Accuracy: {}%".format(layer, node_to, node_from, str(accuracy * 100))
+        print"Weight Flip at [{}][{}][{}] \t Accuracy: {}%".format(LAST_LAYER, node_to, node_from, str(accuracy * 100))

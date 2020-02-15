@@ -1,5 +1,4 @@
 from __future__ import division
-
 import mvtu
 import pickle
 import numpy as np
@@ -56,7 +55,6 @@ class FINN(object):
     def evaluate(self, test_data):
         # Form tuples of prediction and target class for all test samples
         test_results = [(np.argmax(self.feedforward(x)), y) for (x, y) in test_data]
-
         # Return number of predictions which match target class
         return sum(int(x == y) for (x, y) in test_results)
 

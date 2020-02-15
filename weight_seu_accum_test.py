@@ -1,20 +1,27 @@
-from __future__ import division
+"""
+This script performs weight SEU accumulation tests. Each test consists of performing a random
+weight flip and recording the resulting accuracy to a log file in results/weight_seu. This is repeated
+a set number of times per test and multiple tests can be performed.
 
+Usage: python weight_seu_accum_test.py <hidden_layer_size> <num_seus> <num_tests>
+"""
+
+from __future__ import division
 import sys
 import finn
+import argparse
 import mnist_loader
 
-NUM_ARGS = 4
+# Process command line arguments
+parser = argparse.ArgumentParser(description="Reports change in accuracy after multiple SEUs")
+parser.add_argument("hidden_layer_size", type=int, help="Size of hidden layer")
+parser.add_argument("num_seus", type=int, help="Number of SEUs per test")
+parser.add_argument("num_tests", type=int, help="Number of tests")
+args = parser.parse_args()
 
-# Check enough command line arguments are provided
-if len(sys.argv) != NUM_ARGS:
-    print("Usage: python weight_seu_test.py <hidden_layer_size> <num_seus> <num_tests>")
-    sys.exit()
-
-# Get command line args
-hidden_layer_size = int(sys.argv[1])
-num_seus          = int(sys.argv[2])
-num_tests         = int(sys.argv[3])
+hidden_layer_size = args.hidden_layer_size
+num_seus  = args.num_seus
+num_tests = args.num_tests
 
 # Load MNIST dataset
 training_data, validation_data, test_data = mnist_loader.load_data_wrapper()

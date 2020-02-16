@@ -21,7 +21,7 @@ Here is an example BNN designed using the FINNs framework:
 The project dependencies you'll need to install:
 
 * Python 2.7
-* Numpy
+* NumPy
 
 ### Installing Dependencies
 
@@ -37,7 +37,7 @@ Note: `hidden_layer_size` refers to the number of nodes in each hidden layer of 
 
 ### Obtaining Trained Weights and Parameters
 
-This project does not include a way to train a network. Fortunately, the network structure used is identical to that used in the [BNN-PYNQ](https://github.com/Xilinx/BNN-PYNQ) project from Xilinx. In particular, the [src/training](https://github.com/Xilinx/BNN-PYNQ/tree/master/bnn/src/training) directory of the project provides detailed instructions on how to train a network. The file you are looking for will resemble something like "mnist_1w_1a.npz". Once obtaining this file, be sure to place it in the params directory.
+This project does not include a way to train a network. Fortunately, the network structure used is identical to that used in the [BNN-PYNQ](https://github.com/Xilinx/BNN-PYNQ) project from Xilinx. In particular, the [src/training](https://github.com/Xilinx/BNN-PYNQ/tree/master/bnn/src/training) directory of the project provides detailed instructions on how to train a network. The file you are looking for will resemble something like `mnist_1w_1a.npz`. Once obtaining this file, be sure to place it in the params directory.
 
 For your convenience, two of these files are already provided in this project. These are for networks with two hidden layers of 64 or 128 nodes.
 
@@ -71,8 +71,22 @@ The mean accuracy across tests can be found by running the `weight_seu_accum_tes
 
 ### Performing Node SEU Test
 
-*Instructions Coming Soon*
+The script 'node_seu_test.py' performs a test in which, for each node, a new network is loaded and an upset is simulated on that node. The resulting change in accuracy is recorded in a log file located in the results/node_seu directory. This is then repeated for every other node in the network. 
+
+Inversion, stuck high or stuck low errors can be chosen as well as the size of the network using the flags `-i`, `-l`, or `-H` respectively. The test is run using:
+
+```
+python node_seu_test.py <hidden_layer_size> <-i or -l or -H>
+```
+
+The results are stored in the `results/node_seu` directory. The `node_seu_test_analysis.py` script will print the mean and max changes in accuracy from these result files.
 
 ### Performing Last Layer SEU Test
 
-*Instructions Coming Soon*
+The script `last_layer_seu_test.py` performs a test in which each weight in the final layer is flipped, and the resulting change in classification accuracy is recorded. Each weight is flipped on a new network like the node SEU test. The test is run using:
+
+```
+python last_layer_seu_test.py <hidden_layer_size>
+```
+
+The resulting log file is stored in the `results/last layer` directory. The `last_layer_seu_test_analysis.py` script will print the mean and max jump in accuracy, sorted by output node (which each correspond to a digit classification).
